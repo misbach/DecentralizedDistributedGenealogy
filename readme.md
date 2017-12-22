@@ -1,3 +1,5 @@
+# NOTE!! This project as moved here -> https://github.com/DecentralizedGenealogy/webclient
+
 # The Case for a Decentralized Distributed Genealogical Tree
 
 Commercial desktop and cloud based tree managers are using technology as old and antiquated as the ancestors we are researching. With the size and scope of problems this industry has to solve, we can’t afford self-imposed technology hurdles to slow us down. Evolutionary changes have given us progress in a linear fashion. However, it’s time to make revolutionary changes that will result in exponential efficiencies and thereby reduce the manual tedium and burden placed upon the user.
