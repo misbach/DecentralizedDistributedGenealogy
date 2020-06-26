@@ -3,3 +3,4 @@ NOTES.txt
 node_modules
 .gitattributes
 scripts/data/*
+package-lock.json

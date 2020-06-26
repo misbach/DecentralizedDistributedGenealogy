@@ -3,7 +3,7 @@
     "tree": Will download from FamilySearch all ancestors starting from the specified starting person "start", and will continue for the number of generattions specified in the "generations" var.
     "array": Will download all PIDS in the "pids" array.
 
-  Post export: This scripts also:
+  Post export: This script also:
     Downloades the portrait.
     Updates the links->portrait->href field to point to the relative path of the downloaded portrait.
     Updates all resource links in the display->families objects to point to relative paths
@@ -23,21 +23,21 @@ var fs = require('fs');
 var request = require('request');
 
 // User Variables
-var session = "USYSDC901653ADEB1928B1E914AD72B185E6_idses-prod08.a.fsglobal.net";
-var start = "KWCJ-FND";
+var session = "11ba4cca-20d9-47ff-ae4b-110f0c35878c-prod";
+var start = "KWHH-HSW";
 // Set to true if you want to save living people
 var living = false;
 // Where will these files reside so we can update relationship and protrait links
 var dest = "https://raw.githubusercontent.com/misbach/familytree/master/people/";
-var generations = "6";
-var type = "tree"; // Valid types are: ["array", "tree"]
+var generations = "8";
+var type = "array"; // Valid types are: ["array", "tree"]
 
 
 // -------------------------
 // Download array of persons
 // -------------------------
 if (type == "array") {
-  var pids = ["LW61-WTY", "KGJK-M92", "LCPC-FFV", "KL2Z-7Y4", "LJLG-19M", "LCPZ-YL9", "LZVM-Y96"];
+  var pids = ["KWHH-HSW", "KWCR-B7J", "KWCB-KV1", "KWNF-8LZ", "9JTR-P86", "LCYQ-419", "LDJM-KRB", "LCJR-GZF", "KZQ3-2M7", "LDRW-154", "L5RP-Z7J"];
   pids.forEach(function(pid) {
       download(pid, function(rsp) {
         // console.log(rsp);
@@ -51,7 +51,7 @@ if (type == "array") {
 var pids = [];
 if (type == "tree") {
   var options = {
-    url: "https://familysearch.org/platform/tree/ancestry?generations="+generations+"&person="+start,
+    url: "https://api.familysearch.org/platform/tree/ancestry?generations="+generations+"&person="+start,
     headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer '+session,
@@ -84,7 +84,7 @@ function download(id, callback) {
   iteration++;
   // Get Person
   var options = {
-    url: "https://familysearch.org/platform/tree/persons/"+id+'?relatives=true&sourceDescriptions=true',
+    url: "https://api.familysearch.org/platform/tree/persons/"+id+'?relatives=true&sourceDescriptions=true',
     headers: {
       'Accept': 'application/json',
       'Authorization': 'Bearer '+session,
@@ -128,7 +128,7 @@ function download(id, callback) {
 
       // Get Portrait
       var options = {
-        url: "https://familysearch.org/platform/tree/persons/"+id+"/portrait?default=http://vignette3.wikia.nocookie.net/grimm/images/a/a9/Unknown_Male.jpg",
+        url: "https://api.familysearch.org/platform/tree/persons/"+id+"/portrait?default=http://vignette3.wikia.nocookie.net/grimm/images/a/a9/Unknown_Male.jpg",
         headers: {
           'Authorization': 'Bearer '+session,
         }
@@ -143,7 +143,7 @@ function download(id, callback) {
             console.log("Portrait Failed "+response.statusCode+": "+id);
           }
         }).pipe(fs.createWriteStream("scripts/data/"+id+"/"+id+".jpg"));
-      }, iteration * 1000);
+      }, iteration * 500);
 
       // console.log(person.persons[0].display.name);
       return callback(id)
@@ -154,12 +154,14 @@ function download(id, callback) {
 
 // Remove children that are not being downloaded
 function removeChildren(display) {
-  var children = display.familiesAsParent[0].children;
   if (display.familiesAsParent) {
-    if (children) {
-      for (var i = children.length - 1; i >= 0; i--) {
-        if (pids.indexOf(children[i].resourceId) == -1) {
-          children.splice(i, 1);
+    var children = display.familiesAsParent[0].children;
+    if (display.familiesAsParent) {
+      if (children) {
+        for (var i = children.length - 1; i >= 0; i--) {
+          if (pids.indexOf(children[i].resourceId) == -1) {
+            children.splice(i, 1);
+          }
         }
       }
     }
