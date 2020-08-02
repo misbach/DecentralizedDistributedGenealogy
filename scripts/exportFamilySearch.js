@@ -23,12 +23,12 @@ var fs = require('fs');
 var request = require('request');
 
 // User Variables
-var session = "11ba4cca-20d9-47ff-ae4b-110f0c35878c-prod";
+var session = "41bdeec9-4f3a-474d-9bbe-39c893de9339-prod";
 var start = "KWHH-HSW";
 // Set to true if you want to save living people
 var living = false;
 // Where will these files reside so we can update relationship and protrait links
-var dest = "https://raw.githubusercontent.com/misbach/familytree/master/people/";
+var dest = "https://raw.githubusercontent.com/[github_username]/familytree/master/people/";
 var generations = "8";
 var type = "array"; // Valid types are: ["array", "tree"]
 
@@ -37,7 +37,7 @@ var type = "array"; // Valid types are: ["array", "tree"]
 // Download array of persons
 // -------------------------
 if (type == "array") {
-  var pids = ["KWHH-HSW", "KWCR-B7J", "KWCB-KV1", "KWNF-8LZ", "9JTR-P86", "LCYQ-419", "LDJM-KRB", "LCJR-GZF", "KZQ3-2M7", "LDRW-154", "L5RP-Z7J"];
+  // var pids = ["KCC5-JVD", "K2T2-QXR", "LYFH-GTV", "KDBK-Y4H", "LH5W-BDY", "K4FJ-GN8", "L5RP-Z7J"];
   pids.forEach(function(pid) {
       download(pid, function(rsp) {
         // console.log(rsp);
